@@ -2,5 +2,5 @@
 Easy movie maker for a project  
 
 Remember:  
-git pull
+git pull  
 git push
