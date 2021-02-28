@@ -11,7 +11,7 @@ public class TestMovieAndMovieDataReader {
 	MovieDataReaderInterface readerToTest;
 	
 	public static void main(String[] args) {
-		//(new TestMovieAndMovieDataReader()).runTests();
+		(new TestMovieAndMovieDataReader()).runTests();
 	}
 
 	/**
@@ -20,7 +20,7 @@ public class TestMovieAndMovieDataReader {
 	 */
 	public void runTests() {
 		// instantiate reader to test once it is implemented
-		readerToTest = null; //new MovieDataReader();
+		readerToTest = new MovieDataReader();
 		
 		// add all tests to this method
 		if (this.testReaderNumberOfMovies()) {

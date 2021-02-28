@@ -1,3 +1,12 @@
+// --== CS400 File Header Information ==--
+// Name: Jeremy Boetticher
+// Email: boetticher@wisc.edu
+// Team: Red
+// Group: KF
+// TA: Keren Chen
+// Lecturer: Florian
+// Notes to Grader: ex de
+
 import java.util.NoSuchElementException;
 
 public interface MapADT<KeyType, ValueType> {

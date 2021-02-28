@@ -1,36 +1,11 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.LinkedList;
 
 public class MovieDataReader implements MovieDataReaderInterface {
-
-	public static void main(String[] args) {
-		// test the crap here
-		List<MovieInterface> movieList;
-		MovieDataReaderInterface readerToTest = new MovieDataReader();
-		
-		try {
-			movieList = readerToTest.readDataSet(new StringReader(
-					"title,original_title,year,genre,duration,country,language,director,writer,production_company,actors,description,avg_vote\n"
-					+ "The Source of Shadows,The Source of Shadows,2020,Horror,83,USA,English,\"Ryan Bury, Jennifer Bonior\",\"Jennifer Bonior, Trevor Botkin\",Four Thieves Productions,\"Ashleigh Allard, Tom Bonington, Eliane Gagnon, Marissa Kaye Grinestaff, Jenna Heffernan, Joshua Hummel, Janice Kingsley, Chris Labasbas, Jared Laufree, Dominic Lee, Vic May, Sienna Mazzone, Lizzie Mounter, Grace Mumm, Ashley Otis\",\"A series of stories woven together by one of our most primal fears, the fear of the unknown.\",3.5\n"
-					+ "The Insurrection,The Insurrection,2020,Action,90,USA,English,Rene Perez,Rene Perez,,\"Michael Paré, Wilma Elles, Joseph Camilleri, Rebecca Tarabocchia, Jeanine Harrington, Malorie Glavan, Danner Boyd, Michael Cendejas, Woody Clendenen, Keely Dervin, Aaron Harvey, Tony Jackson, Michael Jarrod, Angelina Karo, Bernie Kelly\",The director of the largest media company wants to expose how left-wing powers use film to control populations.,2.9\n"
-					+ "Valley Girl,Valley Girl,2020,\"Comedy, Musical, Romance\",102,USA,English,Rachel Lee Goldenberg,\"Amy Talkington, Andrew Lane\",Sneak Preview Productions,\"Jessica Rothe, Josh Whitehouse, Jessie Ennis, Ashleigh Murray, Chloe Bennet, Logan Paul, Mae Whitman, Mario Revolori, Rob Huebel, Judy Greer, Alex Lewis, Alex MacNicoll, Danny Ramirez, Andrew Kai, Allyn Rachel\",\"Set to a new wave '80s soundtrack, a pair of young lovers from different backgrounds defy their parents and friends to stay together. A musical adaptation of the 1983 film.\",5.4\n"
-			));
-		} catch (FileNotFoundException e) {
-			System.out.println("File Not Found Exception oh no");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("IO Exception oh no");
-			e.printStackTrace();
-		} catch (DataFormatException e) {
-			System.out.println("Data Format Exception oh no");
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * A list of the keys to look out for in a csv, in alphabetical order.
@@ -77,12 +52,6 @@ public class MovieDataReader implements MovieDataReaderInterface {
 		}
 		SearchForComparison(columnSet, columnPlace, nxtStr);
 		
-		System.out.print("Accepted Columns: ");
-		for(int i = 0; i < columnSet.length; i++) {
-			System.out.print(columnSet[i] + " ");
-		}
-		System.out.println("\n---------------");
-		
 		// creates a Movie object for every row
 		int chrInt = inputFileReader.read();
 		List<MovieInterface> movieList = new LinkedList<MovieInterface>();
@@ -112,8 +81,13 @@ public class MovieDataReader implements MovieDataReaderInterface {
 			SetParameter(columnSet, currentCol, nxtStr, importantRowStrings);
 			
 			// turn into movie
-			Movie nxtMovie = CreateMovieFromColumns(importantRowStrings);
-			movieList.add(nxtMovie);
+			try {
+				Movie nxtMovie = CreateMovieFromColumns(importantRowStrings);
+				movieList.add(nxtMovie);
+			}
+			catch(Exception e) {
+				throw new DataFormatException(e.getMessage());
+			}
 			
 			// sets chr int so that it can check to either finish or convert  
 			// to nxtChr

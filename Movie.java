@@ -15,8 +15,8 @@ public class Movie implements MovieInterface {
 		// finds the right genres
 		genres = Arrays.asList(genre.split(", "));
 		
-		System.out.println(this.toString());
-		System.out.println("------------");
+		//System.out.println(this.toString());
+		//System.out.println("------------");
 	}
 	
 	//#region Fields
@@ -73,7 +73,7 @@ public class Movie implements MovieInterface {
 	// from super interface Comparable
 	@Override
 	public int compareTo(MovieInterface otherMovie) {
-		return getAvgVote().compareTo(otherMovie.getAvgVote());
+		return otherMovie.getAvgVote().compareTo(getAvgVote());
 	}
 	
 	@Override
