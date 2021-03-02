@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
@@ -25,7 +24,7 @@ public class MovieDataReader implements MovieDataReaderInterface {
 	@Override
 	public List<MovieInterface> readDataSet(Reader inputFileReader)
 			throws IOException, DataFormatException {
-		
+				
 		// initializes a set to catalog positions of the importantKeys, in case column
 		// positions aren't constant.
 		int[] columnSet = new int[importantKeys.length];
@@ -43,19 +42,22 @@ public class MovieDataReader implements MovieDataReaderInterface {
 		}
 		String nxtStr = "";
 		int columnPlace = 0;
-		while(nxtChr != '\n') {
+		while(!IsEndCharacter(nxtChr)) {
 			if(nxtChr == ',') {
 				SearchForComparison(columnSet, columnPlace, nxtStr);
 				columnPlace++;
 				nxtStr = "";
 			}
-			else nxtStr += nxtChr;
+			else { 
+				nxtStr += nxtChr; 
+			}
+
 			nxtChr = (char)inputFileReader.read();
 		}
 		SearchForComparison(columnSet, columnPlace, nxtStr);
-		
+
 		// creates a Movie object for every row
-		int chrInt = inputFileReader.read();
+		int chrInt = NextParsableCharacter(inputFileReader);
 		List<MovieInterface> movieList = new LinkedList<MovieInterface>();
 		while(chrInt > -1) {
 			// reset row
@@ -66,7 +68,7 @@ public class MovieDataReader implements MovieDataReaderInterface {
 			String[] importantRowStrings = new String[importantKeys.length];
 			
 			// deciphers row
-			while(nxtChr != '\n') {
+			while(!IsEndCharacter(nxtChr)) {				
 				if(nxtChr == ',' && !quotationLock) {
 					SetParameter(columnSet, currentCol, nxtStr, importantRowStrings);	
 					nxtStr = "";
@@ -81,11 +83,11 @@ public class MovieDataReader implements MovieDataReaderInterface {
 				nxtChr = chrInt == -1 ? '\n' : (char)chrInt;
 
 				// checks to make sure quotations aren't messing up the row
-				if(nxtChr == '\n' && quotationLock) 
+				if(IsEndCharacter(nxtChr) && quotationLock) 
 					throw new DataFormatException("Issue with quotation marks.");
 				
 				// checks to make sure that this row's column count is the same as the column count
-				else if(nxtChr == '\n' && currentCol != columnPlace) 
+				else if(IsEndCharacter(nxtChr) && currentCol != columnPlace) 
 					throw new DataFormatException("Incorrect column count at row " + currentCol);
 			}
 			SetParameter(columnSet, currentCol, nxtStr, importantRowStrings);
@@ -94,17 +96,22 @@ public class MovieDataReader implements MovieDataReaderInterface {
 			try {
 				Movie nxtMovie = CreateMovieFromColumns(importantRowStrings);
 				movieList.add(nxtMovie);
+				System.out.println("----" + nxtMovie.getTitle() + "----");
 			}
 			catch(Exception e) {
-				throw new DataFormatException(e.getMessage());
+				throw new DataFormatException("Issue with creating a movie.");
 			}
 			
 			// sets chr int so that it can check to either finish or convert  
 			// to nxtChr
-			chrInt = inputFileReader.read();
+            chrInt = NextParsableCharacter(inputFileReader);
 		}
 		
 		inputFileReader.close();
+		
+		for(MovieInterface i : movieList) {
+			System.out.println(i.toString());
+		}
 		
 		return movieList;
 	}
@@ -119,11 +126,9 @@ public class MovieDataReader implements MovieDataReaderInterface {
 	 * TODO: make it break if the alphabetical order is surpassed 
 	 */
 	private void SearchForComparison(int[] columnSet, int columnPlace, String nxtStr) {
-		//System.out.println(" " + nxtStr);
-		for(int i = 0; i < importantKeys.length; i++) { 			
+		for(int i = 0; i < importantKeys.length; i++) { 	
 			if(nxtStr.compareTo(importantKeys[i]) == 0) {				
 				columnSet[i] = columnPlace; 
-				//System.out.println(" --- column set for " + nxtStr + " --- ");
 				break;
 			}
 			
@@ -143,6 +148,35 @@ public class MovieDataReader implements MovieDataReaderInterface {
 				importantRowStrings[i] = nxtStr;
 			}
 		}	
+	}
+	
+	/**
+	 * Checks to make sure that the character provided is a character that 
+	 * indicates the end of a row.
+	 * @param character the character to check
+	 * @return true if it indicates the end of a row, false if otherwise.
+	 */
+	private boolean IsEndCharacter(char character) {
+		return character == '\r' || character == '\n';
+	}
+	
+	/**
+	 * Gets the next character from the reader that is not BS, NL, or CR.
+	 * @param reader the reader to read from
+	 * @return the next readable character's int
+	 * @throws IOException if there is an issue with the reader
+	 */
+	private int NextParsableCharacter(Reader reader) throws IOException {
+		int next = reader.read();
+		
+		// while it's not BS, NL, CR
+		while(next == (int)'\r' || next == (int)'\n' || next == 10) {
+			System.out.print(next + " ");
+			next = reader.read();
+		}
+		
+		System.out.println(next);
+		return next;
 	}
 	
 	/**

@@ -2,6 +2,9 @@ import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.DataFormatException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -53,7 +56,7 @@ public class TestMovieAndMovieDataReader {
 		if(this.testIOException()) {
 			System.out.println("Test I/O Exception: PASSED");
 		} else {
-			System.out.println("Test I/O Exception: FAILED");
+			System.out.println("Test IO Exception: FAILED");
 		}
 	}
 	
@@ -77,6 +80,7 @@ public class TestMovieAndMovieDataReader {
 			// test failed
 			return false;
 		}
+		
 		if (movieList.size() == 3) {
 			// test passed
 			return true;
@@ -221,5 +225,4 @@ public class TestMovieAndMovieDataReader {
 			return false;
 		}
 	}
-
 }
