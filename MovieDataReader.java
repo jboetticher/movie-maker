@@ -96,7 +96,6 @@ public class MovieDataReader implements MovieDataReaderInterface {
 			try {
 				Movie nxtMovie = CreateMovieFromColumns(importantRowStrings);
 				movieList.add(nxtMovie);
-				System.out.println("----" + nxtMovie.getTitle() + "----");
 			}
 			catch(Exception e) {
 				throw new DataFormatException("Issue with creating a movie.");
@@ -108,10 +107,6 @@ public class MovieDataReader implements MovieDataReaderInterface {
 		}
 		
 		inputFileReader.close();
-		
-		for(MovieInterface i : movieList) {
-			System.out.println(i.toString());
-		}
 		
 		return movieList;
 	}
@@ -171,11 +166,9 @@ public class MovieDataReader implements MovieDataReaderInterface {
 		
 		// while it's not BS, NL, CR
 		while(next == (int)'\r' || next == (int)'\n' || next == 10) {
-			System.out.print(next + " ");
 			next = reader.read();
 		}
 		
-		System.out.println(next);
 		return next;
 	}
 	
