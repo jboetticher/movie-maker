@@ -23,12 +23,29 @@ import java.io.Reader;
 import java.io.FileReader;
 import java.io.StringReader;
 
+/**
+ * 
+ * @author xyd10
+ *
+ */
 public class Backend implements BackendInterface {
 	private HashTableMap<String, List<MovieInterface>> movieRatingTable;
 	private HashTableMap<String, List<MovieInterface>> movieGenreTable;
 	private List<MovieInterface> movieList;
 	private List<String> ratingList;
 	private List<String> genreList;
+	
+	/**
+	 * 
+	 * This is the constructor for passing in the csv file
+	 * it creates and fills list of movies taken from the data
+	 * it also creates and fills two hash tables to organize the data, one by rating and one by genre
+	 * @param file is the csv file passed in from the data wrangler
+	 * @throws FileNotFoundException if the file is not found
+	 * @throws IOException if an error occurs if the input fails
+	 * @throws DataFormatException if the data are not formatted correctly
+	 * 
+	 */
 	public Backend(FileReader file) throws FileNotFoundException, IOException, DataFormatException {
 		MovieDataReader data = new MovieDataReader();
 		movieList = data.readDataSet(file);
@@ -57,6 +74,17 @@ public class Backend implements BackendInterface {
 		}
 	}
 	
+	/**
+	 * 
+	 * This is the constructor for passing in the string format, making it easier to test
+	 * it creates and fills list of movies taken from the data
+	 * it also creates and fills two hash tables to organize the data, one by rating and one by genre
+	 * @param str is the string format of the csv file passed in from the data wrangler
+	 * @throws FileNotFoundException if the file is not found
+	 * @throws IOException if an error occurs if the input fails
+	 * @throws DataFormatException if the data are not formatted correctly
+	 * 
+	 */
 	public Backend(StringReader str) throws FileNotFoundException, IOException, DataFormatException {
 		movieList = new LinkedList<MovieInterface>();
 		MovieDataReader data = new MovieDataReader();
@@ -84,6 +112,10 @@ public class Backend implements BackendInterface {
 		}
 	}
 	
+	/**
+	 * add the genre to the genreList unless it is already there
+	 * @param genre is the genre to be added
+	 */
 	@Override
 	public void addGenre(String genre) {
 		// TODO Auto-generated method stub
@@ -92,6 +124,10 @@ public class Backend implements BackendInterface {
 		}
 	}
 
+	/**
+	 * add the rating to a list unless it is already there
+	 * @param rating is the rating to be added
+	 */
 	@Override
 	public void addAvgRating(String rating) {
 		// TODO Auto-generated method stub
@@ -100,27 +136,47 @@ public class Backend implements BackendInterface {
 		}
 	}
 
+	/**
+	 * remove the genre from the genreList
+	 * @param genre is the genre to be removed
+	 */
 	@Override
 	public void removeGenre(String genre) {
 		genreList.remove(genre);
 		
 	}
 
+	/**
+	 * remove the rating from the ratingList
+	 * @param rating is the rating to be removed
+	 */
 	@Override
 	public void removeAvgRating(String rating) {
 		ratingList.remove(rating);
 	}
 
+	/**
+	 * gets the genres that have been selected by the front end
+	 * @return list of genres (in genreList)
+	 */
 	@Override
 	public List<String> getGenres() {
 		return genreList;
 	}
 
+	/**
+	 * gets the ratings that have been selected by the front end
+	 * @return list of ratings (in ratingList)
+	 */
 	@Override
 	public List<String> getAvgRatings() {
 		return ratingList;
 	}
 
+	/**
+	 * gets the total number of movies
+	 * @return total number of movies
+	 */
 	@Override
 	public int getNumberOfMovies() {
 		int count = 0;
@@ -131,6 +187,10 @@ public class Backend implements BackendInterface {
 		return count;
 	}
 	
+	/**
+	 * gets a list of movies, in order of descending rating, based on the selections made by the front end
+	 * @return the list of movies, in order of descending rating, based on the selections made by the front end
+	 */
 	public List<MovieInterface> getMovies() {
 		List<MovieInterface> fullMovieList = new LinkedList<MovieInterface>();
 		for(int i = ratingList.size() - 1; i >= 0; i--) {
@@ -157,6 +217,11 @@ public class Backend implements BackendInterface {
 		return fullMovieList;
 	}
 
+	/**
+	 * gets three consecutive movies, in order of descending rating, from the array of movies based on selections from the front end
+	 * @param startingIndex is the index in the array of movies to begin from
+	 * @return the three consecutive movies
+	 */
 	@Override
 	public List<MovieInterface> getThreeMovies(int startingIndex) {
 		List<MovieInterface> threeMovies = new LinkedList<MovieInterface>();
@@ -172,6 +237,10 @@ public class Backend implements BackendInterface {
 		return threeMovies;
 	}
 
+	/**
+	 * gets a list of all the genres such that every genre of every movie in the list of all movies is covered
+	 * @return a list of all genres based on the list of all movies
+	 */
 	@Override
 	public List<String> getAllGenres() {
 		List<String> allGenres = new LinkedList<String>();
