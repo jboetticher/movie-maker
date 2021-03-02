@@ -6,6 +6,6 @@ import java.io.Reader;
 
 public interface MovieDataReaderInterface {
 	
-	public List<MovieInterface> readDataSet(Reader inputFileReader) throws FileNotFoundException, IOException, DataFormatException;
+	public List<MovieInterface> readDataSet(Reader inputFileReader) throws IOException, DataFormatException;
 
 }

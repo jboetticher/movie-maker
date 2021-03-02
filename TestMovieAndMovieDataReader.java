@@ -43,10 +43,10 @@ public class TestMovieAndMovieDataReader {
 		} else {
 			System.out.println("Test movie count: FAILED");
 		}
-		if(this.testMovieAddedWrong()) {
-			System.out.println("Test movie added wrong: PASSED");
+		if(this.testWrongAmountOfColumns()) {
+			System.out.println("Test wrong amount of columns: PASSED");
 		} else {
-			System.out.println("Test movie added wrong: FAILED");
+			System.out.println("Test wrong amount of columns: FAILED");
 		}
 	}
 	
@@ -184,13 +184,13 @@ public class TestMovieAndMovieDataReader {
 	 * a movie has been added.
 	 * @return true if the test passed, false if it failed.
 	 */
-	public boolean testMovieAddedWrong() {
+	public boolean testWrongAmountOfColumns() {
 		List<MovieInterface> movieList;
 		try {
-			movieList = readerToTest.readDataSet(new StringReader("jeremy is cool"));
-			return true;
-		} catch (Exception e) {
+			movieList = readerToTest.readDataSet(new StringReader("jeremy, pog, dog\ndoodle"));
 			return false;
+		} catch (Exception e) {
+			return true;
 		}
 	}
 

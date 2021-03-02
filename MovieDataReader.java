@@ -18,17 +18,13 @@ public class MovieDataReader implements MovieDataReaderInterface {
 	
 	/**
 	 * Reads data from csv format and places it into a list of MovieInterface objects.
-	 * @param inputFileReader
-	 * TODO: throw proper exceptions and check for things breaking
+	 * @param inputFileReader the data to read movie sets from
+	 * @throws IOException when there is an input or output exception
+	 * @throws DataFormatException when the data isn't in a proper csv format
 	 */
 	@Override
 	public List<MovieInterface> readDataSet(Reader inputFileReader)
-			throws FileNotFoundException, IOException, DataFormatException {
-		
-		// error 1
-		if(inputFileReader == null) {
-			throw new FileNotFoundException("No input reader given.");
-		}
+			throws IOException, DataFormatException {
 		
 		// initializes a set to catalog positions of the importantKeys, in case column
 		// positions aren't constant.
@@ -38,7 +34,13 @@ public class MovieDataReader implements MovieDataReaderInterface {
 		// figures out which columns of the data set correspond with the importantKeys.
 		// the first line of the csv are always the column names.
 		// it will keep looking for columns until the line is over.
-		char nxtChr = (char)inputFileReader.read();
+		char nxtChr;
+		try {
+			nxtChr = (char)inputFileReader.read();
+		}
+		catch(Exception e) {
+			throw new IOException("Issue with reading inputFileReader: " + e.getMessage());
+		}
 		String nxtStr = "";
 		int columnPlace = 0;
 		while(nxtChr != '\n') {
@@ -77,6 +79,14 @@ public class MovieDataReader implements MovieDataReaderInterface {
 				// hits the end of the file
 				chrInt = inputFileReader.read();
 				nxtChr = chrInt == -1 ? '\n' : (char)chrInt;
+
+				// checks to make sure quotations aren't messing up the row
+				if(nxtChr == '\n' && quotationLock) 
+					throw new DataFormatException("Issue with quotation marks.");
+				
+				// checks to make sure that this row's column count is the same as the column count
+				else if(nxtChr == '\n' && currentCol != columnPlace) 
+					throw new DataFormatException("Incorrect column count at row " + currentCol);
 			}
 			SetParameter(columnSet, currentCol, nxtStr, importantRowStrings);
 			
