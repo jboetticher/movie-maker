@@ -1,6 +1,8 @@
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
+import java.util.zip.DataFormatException;
+import java.io.IOException;
 
 /**
  * This class contains a set of tests for the MovieInterface and MovieDataReaderInterface
@@ -47,6 +49,11 @@ public class TestMovieAndMovieDataReader {
 			System.out.println("Test wrong amount of columns: PASSED");
 		} else {
 			System.out.println("Test wrong amount of columns: FAILED");
+		}
+		if(this.testIOException()) {
+			System.out.println("Test I/O Exception: PASSED");
+		} else {
+			System.out.println("Test I/O Exception: FAILED");
 		}
 	}
 	
@@ -180,8 +187,8 @@ public class TestMovieAndMovieDataReader {
 
 
 	/**
-	 * This test reads in a movie incorrectly, and checks to make sure that
-	 * a movie has been added.
+	 * This test reads in a movie with the wrong amount of columns, and checks 
+	 * to make sure that a DataFormatException error occurs.
 	 * @return true if the test passed, false if it failed.
 	 */
 	public boolean testWrongAmountOfColumns() {
@@ -189,8 +196,29 @@ public class TestMovieAndMovieDataReader {
 		try {
 			movieList = readerToTest.readDataSet(new StringReader("jeremy, pog, dog\ndoodle"));
 			return false;
-		} catch (Exception e) {
+		} catch (DataFormatException e) {
 			return true;
+		} catch(Exception e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+	
+	/**
+	 * This test reads in a movie with a bad reader, and checks to make sure
+	 * that an IOException error occurs.
+	 * @return true if the test passed, false if it failed.
+	 */
+	public boolean testIOException() {
+		List<MovieInterface> movieList;
+		try {
+			movieList = readerToTest.readDataSet(null);
+			return false;
+		} catch(IOException e) {
+			return true;
+		} catch(Exception e) {
+			System.out.println(e);
+			return false;
 		}
 	}
 
