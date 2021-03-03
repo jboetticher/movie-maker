@@ -27,6 +27,11 @@ public class TestBackend {
 		} else {
 			System.out.println("Test get three movies sorted by rating: FAILED");
 		}
+		if (this.testThreeMovies()) {
+			System.out.println("Test get three movies sorted by rating: PASSED");
+		} else {
+			System.out.println("Test get three movies sorted by rating: FAILED");
+		}
 		if (this.testAddGenre()) {
 		        System.out.println("Test add genres: PASSED");
 	        } else {
@@ -56,6 +61,7 @@ public class TestBackend {
 					+ "The Insurrection,The Insurrection,2020,Action,90,USA,English,Rene Perez,Rene Perez,,\"Michael Paré, Wilma Elles, Joseph Camilleri, Rebecca Tarabocchia, Jeanine Harrington, Malorie Glavan, Danner Boyd, Michael Cendejas, Woody Clendenen, Keely Dervin, Aaron Harvey, Tony Jackson, Michael Jarrod, Angelina Karo, Bernie Kelly\",The director of the largest media company wants to expose how left-wing powers use film to control populations.,2.9\n"
 					+ "Valley Girl,Valley Girl,2020,\"Comedy, Musical, Romance\",102,USA,English,Rachel Lee Goldenberg,\"Amy Talkington, Andrew Lane\",Sneak Preview Productions,\"Jessica Rothe, Josh Whitehouse, Jessie Ennis, Ashleigh Murray, Chloe Bennet, Logan Paul, Mae Whitman, Mario Revolori, Rob Huebel, Judy Greer, Alex Lewis, Alex MacNicoll, Danny Ramirez, Andrew Kai, Allyn Rachel\",\"Set to a new wave '80s soundtrack, a pair of young lovers from different backgrounds defy their parents and friends to stay together. A musical adaptation of the 1983 film.\",5.4\n"
 			));
+			System.out.println(backendToTest.getNumberOfMovies());
 				if (backendToTest.getNumberOfMovies() == 0) {
 				// test passed
 					return true;
@@ -210,11 +216,15 @@ public class TestBackend {
 					+ "Valley Girl,Valley Girl,2020,\"Comedy, Musical, Romance\",102,USA,English,Rachel Lee Goldenberg,\"Amy Talkington, Andrew Lane\",Sneak Preview Productions,\"Jessica Rothe, Josh Whitehouse, Jessie Ennis, Ashleigh Murray, Chloe Bennet, Logan Paul, Mae Whitman, Mario Revolori, Rob Huebel, Judy Greer, Alex Lewis, Alex MacNicoll, Danny Ramirez, Andrew Kai, Allyn Rachel\",\"Set to a new wave '80s soundtrack, a pair of young lovers from different backgrounds defy their parents and friends to stay together. A musical adaptation of the 1983 film.\",5.4\n"
 					+ "Valley Boy,Valley Boy,2020,\"Comedy, Musical, Romance\",102,USA,English,Rachel Lee Goldenberg,\"Amy Talkington, Andrew Lane\",Sneak Preview Productions,\"Jessica Rothe, Josh Whitehouse, Jessie Ennis, Ashleigh Murray, Chloe Bennet, Logan Paul, Mae Whitman, Mario Revolori, Rob Huebel, Judy Greer, Alex Lewis, Alex MacNicoll, Danny Ramirez, Andrew Kai, Allyn Rachel\",\"Set to a new wave '80s soundtrack, a pair of young lovers from different backgrounds defy their parents and friends to stay together. A musical adaptation of the 1983 film.\",5.4\n"
 			)); 
-			backendToTest.addAvgRating("5");
-			backendToTest.addAvgRating("3");
-			backendToTest.addAvgRating("2");
-			if(backendToTest.getThreeMovies(0).get(0).getAvgVote().equals(5.4)&&
-				   backendToTest.getThreeMovies(0).get(2).getAvgVote().equals(3.5)&&
+			for(int i = 0; i <= 10; i++) {
+				backendToTest.addAvgRating("" + i);
+			}
+			backendToTest.addGenre("Horror");
+			backendToTest.addGenre("Comedy");
+			backendToTest.addGenre("Romance");
+			backendToTest.addGenre("Action");
+			if(backendToTest.getThreeMovies(0).get(0).getTitle().equals("Valley Girl")&&
+				   backendToTest.getThreeMovies(0).get(2).getTitle().equals("The Source of Shadows")&&
 				   backendToTest.getThreeMovies(0).size() == 3) {
 				//passed
 				return true;

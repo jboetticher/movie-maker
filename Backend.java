@@ -182,10 +182,7 @@ public class Backend implements BackendInterface {
 	@Override
 	public int getNumberOfMovies() {
 		int count = 0;
-		for(int i = 0; i < movieRatingTable.size(); i++) {
-			// sum the sizes of each bucket
-			count+=movieRatingTable.get("" + i).size();
-		}
+		count+=getMovies().size();
 		return count;
 	}
 	
@@ -202,12 +199,10 @@ public class Backend implements BackendInterface {
 				fullMovieList.add(movieRatingTable.get("" + i).get(j));
 			}
 		}
-		System.out.println(fullMovieList.get(0).getTitle());
 		for(int i = 0; i < fullMovieList.size(); i++) {
 			boolean movieContained = false;
 			for(int j = 0; j < fullMovieList.get(i).getGenres().size(); j++) {
 				// see if the movie contains one of the genres in genreList
-				System.out.println(genreList.contains(fullMovieList.get(i).getGenres().get(j)));
 				if(genreList.contains(fullMovieList.get(i).getGenres().get(j))) {
 					movieContained = true;
 				}
@@ -232,10 +227,9 @@ public class Backend implements BackendInterface {
 		try {
 			for(int i = 0; i < 3; i++) {
 				// add the three movies from the current fullMovieList in getMovies() (which has already been sorted in descending order)
-				System.out.println(getMovies().get(i));
 				threeMovies.add(getMovies().get(startingIndex + i)); 
 			}
-		} catch (ArrayIndexOutOfBoundsException e) { 
+		} catch (IndexOutOfBoundsException e) { 
 			// if there are less than three movies after the index specified, or the index is out of bounds, return right away
 			return threeMovies;
 		}
