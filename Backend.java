@@ -56,9 +56,9 @@ public class Backend implements BackendInterface {
 		for(int i = 0; i < getAllGenres().size(); i++) {
 			movieGenreTable.put(getAllGenres().get(i), new LinkedList<MovieInterface>());
 			for(int j = 0; j < movieList.size(); j++) {
-				if(movieList.get(j).getGenres().contains(getAllGenres().get(i)) && !movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(i))) {
+				if(movieList.get(j).getGenres().contains(getAllGenres().get(i)) && !movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(j))) {
 					// if the movie is categorized as being a certain genre and that movie isn't included in the list already, add it to that genre's list
-					movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(i));
+					movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(j));
 				}
 			}
 		}
@@ -87,6 +87,8 @@ public class Backend implements BackendInterface {
 	 */
 	public Backend(StringReader str) throws FileNotFoundException, IOException, DataFormatException {
 		movieList = new LinkedList<MovieInterface>();
+		movieRatingTable = new HashTableMap<String, List<MovieInterface>>();
+		movieGenreTable = new HashTableMap<String, List<MovieInterface>>();
 		MovieDataReader data = new MovieDataReader();
 		movieList = data.readDataSet(str);
 		ratingList = new LinkedList<String>();
@@ -94,9 +96,9 @@ public class Backend implements BackendInterface {
 		for(int i = 0; i < getAllGenres().size(); i++) {
 			movieGenreTable.put(getAllGenres().get(i), new LinkedList<MovieInterface>());
 			for(int j = 0; j < movieList.size(); j++) {
-				if(movieList.get(j).getGenres().contains(getAllGenres().get(i)) && !movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(i))) {
+				if(movieList.get(j).getGenres().contains(getAllGenres().get(i)) && !movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(j))) {
 					// if the movie is categorized as being a certain genre and that movie isn't included in the list already, add it to that genre's list
-					movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(i));
+					movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(j));
 				}
 			}
 		}
@@ -200,10 +202,12 @@ public class Backend implements BackendInterface {
 				fullMovieList.add(movieRatingTable.get("" + i).get(j));
 			}
 		}
+		System.out.println(fullMovieList.get(0).getTitle());
 		for(int i = 0; i < fullMovieList.size(); i++) {
 			boolean movieContained = false;
 			for(int j = 0; j < fullMovieList.get(i).getGenres().size(); j++) {
 				// see if the movie contains one of the genres in genreList
+				System.out.println(genreList.contains(fullMovieList.get(i).getGenres().get(j)));
 				if(genreList.contains(fullMovieList.get(i).getGenres().get(j))) {
 					movieContained = true;
 				}
@@ -228,6 +232,7 @@ public class Backend implements BackendInterface {
 		try {
 			for(int i = 0; i < 3; i++) {
 				// add the three movies from the current fullMovieList in getMovies() (which has already been sorted in descending order)
+				System.out.println(getMovies().get(i));
 				threeMovies.add(getMovies().get(startingIndex + i)); 
 			}
 		} catch (ArrayIndexOutOfBoundsException e) { 
