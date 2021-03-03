@@ -1,10 +1,16 @@
+// --== CS400 File Header Information ==--
+// Name: Jeremy Boetticher
+// Email: boetticher@wisc.edu
+// Team: Red
+// Group: KF
+// TA: Keren Chen
+// Lecturer: Florian Heimerl
+// Notes to Grader: -
+
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.zip.DataFormatException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 /**
