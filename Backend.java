@@ -56,9 +56,11 @@ public class Backend implements BackendInterface {
 		for(int i = 0; i < getAllGenres().size(); i++) {
 			movieGenreTable.put(getAllGenres().get(i), new LinkedList<MovieInterface>());
 			for(int j = 0; j < movieList.size(); j++) {
-				if(movieList.get(j).getGenres().contains(getAllGenres().get(i)) && !movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(j))) {
-					// if the movie is categorized as being a certain genre and that movie isn't included in the list already, add it to that genre's list
-					movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(j));
+				if(movieList.get(j).getGenres().contains(getAllGenres().get(i))) {
+					if(!movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(j))) {
+						// if the movie is categorized as being a certain genre and that movie isn't included in the list already, add it to that genre's list
+						movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(j));
+					}
 				}
 			}
 		}
@@ -96,9 +98,11 @@ public class Backend implements BackendInterface {
 		for(int i = 0; i < getAllGenres().size(); i++) {
 			movieGenreTable.put(getAllGenres().get(i), new LinkedList<MovieInterface>());
 			for(int j = 0; j < movieList.size(); j++) {
-				if(movieList.get(j).getGenres().contains(getAllGenres().get(i)) && !movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(j))) {
-					// if the movie is categorized as being a certain genre and that movie isn't included in the list already, add it to that genre's list
-					movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(j));
+				if(movieList.get(j).getGenres().contains(getAllGenres().get(i))) {
+					if(!movieGenreTable.get(getAllGenres().get(i)).contains(movieList.get(j))) {
+						// if the movie is categorized as being a certain genre and that movie isn't included in the list already, add it to that genre's list
+						movieGenreTable.get(getAllGenres().get(i)).add(movieList.get(j));
+					}
 				}
 			}
 		}
