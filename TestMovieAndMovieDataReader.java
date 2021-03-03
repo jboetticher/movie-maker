@@ -59,6 +59,11 @@ public class TestMovieAndMovieDataReader {
 		} else {
 			System.out.println("Test wrong amount of columns: FAILED");
 		}
+		if(this.testBadQuotationMarks()) {
+			System.out.println("Test bad use of quotation marks: PASSED");
+		} else {
+			System.out.println("Test bad use of quotation marks: FAILED");
+		}
 		if(this.testIOException()) {
 			System.out.println("Test I/O Exception: PASSED");
 		} else {
@@ -168,9 +173,7 @@ public class TestMovieAndMovieDataReader {
 		// test passes
 		return true;
 	}
-	
-	// TODO: Data Wrangler, add at least 2 more test
-	
+		
 	/**
 	 * This test reads in a single movie, then checks to make sure that only
 	 * one movie has been added.
@@ -195,7 +198,6 @@ public class TestMovieAndMovieDataReader {
 		}
 	}
 
-
 	/**
 	 * This test reads in a movie with the wrong amount of columns, and checks 
 	 * to make sure that a DataFormatException error occurs.
@@ -205,6 +207,51 @@ public class TestMovieAndMovieDataReader {
 		List<MovieInterface> movieList;
 		try {
 			movieList = readerToTest.readDataSet(new StringReader("jeremy, pog, dog\ndoodle"));
+			return false;
+		} catch (DataFormatException e) {
+			return true;
+		} catch(Exception e) {
+			System.out.println(e);
+			return false;
+		}
+	}
+	
+	/**
+	 * This test reads in a movie with incorrect use of quotation marks, and
+	 * checks to make sure that a DataFormatException error occurs. 
+	 * @return true if the test passed, false if it failed.
+	 */
+	public boolean testBadQuotationMarks() {
+		List<MovieInterface> movieList;
+		try {
+			movieList = readerToTest.readDataSet(new StringReader(
+					"title,original_title,year,genre,duration,country,language,director,writer,production_company,actors,description,avg_vote\n"
+					+ "The \"Source of Shadows,The Source of Shadows,2020,Horror,83,USA,English,\"Ryan Bury, Jennifer Bonior\",\"Jennifer Bonior, Trevor Botkin\",Four Thieves Productions,\"Ashleigh Allard, Tom Bonington, Eliane Gagnon, Marissa Kaye Grinestaff, Jenna Heffernan, Joshua Hummel, Janice Kingsley, Chris Labasbas, Jared Laufree, Dominic Lee, Vic May, Sienna Mazzone, Lizzie Mounter, Grace Mumm, Ashley Otis\",\"A series of stories woven together by one of our most primal fears, the fear of the unknown.\",3.5\n"));
+			return false;
+		} catch (DataFormatException e) {
+			// continues
+		} catch(Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		
+		try {
+			movieList = readerToTest.readDataSet(new StringReader(
+					"title,original_title,year,genre,duration,country,language,director,writer,production_company,actors,description,avg_vote\n"
+					+ "The \"Source of Shadows,The Source of Shadows,2020,Horror,83,USA,English,\"Ryan Bury, Jennifer Bonior\",\"Jennifer Bonior, Trevor Botkin\",Four Thieves Productions,\"Ashleigh Allard, Tom Bonington, Eliane Gagnon, Marissa Kaye Grinestaff, Jenna Heffernan, Joshua Hummel, Janice Kingsley, Chris Labasbas, Jared Laufree, Dominic Lee, Vic May, Sienna Mazzone, Lizzie Mounter, Grace Mumm, Ashley Otis\",\"A series of stories woven together by one of our most primal fears, the fear of the unknown.\",3.5\n\""));
+			return false;
+		} catch (DataFormatException e) {
+			// continues
+		} catch(Exception e) {
+			System.out.println(e);
+			return false;
+		}
+		
+		
+		try {
+			movieList = readerToTest.readDataSet(new StringReader(
+					"title,original_title,year,genre,duration,country,language,director,writer,production_company,actors,description,avg_vote\n"
+					+ "The Source of Shadows,The Source of Shadows,2020,Horror,83,USA,English,\"Ryan\" Bury, Jennifer Bonior\",\"Jennifer Bonior, Trevor Botkin\",Four Thieves Productions,\"Ashleigh Allard, Tom Bonington, Eliane Gagnon, Marissa Kaye Grinestaff, Jenna Heffernan, Joshua Hummel, Janice Kingsley, Chris Labasbas, Jared Laufree, Dominic Lee, Vic May, Sienna Mazzone, Lizzie Mounter, Grace Mumm, Ashley Otis\",\"A series of stories woven together by one of our most primal fears, the fear of the unknown.\",3.5\n"));
 			return false;
 		} catch (DataFormatException e) {
 			return true;
